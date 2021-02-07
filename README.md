@@ -1,3 +1,3 @@
 # gocut
 
-A simple swipe from development to live with Golang.
+A simple swipe from development to rollout with Golang.
