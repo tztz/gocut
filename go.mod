@@ -1,4 +1,4 @@
-module srv.tztz.io/gocut
+module srv.tztz.io/example/gocut
 
 go 1.15
 
