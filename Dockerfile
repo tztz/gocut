@@ -1,33 +1,56 @@
-############################
-# STEP 1 build executable binary
-############################
+# ------------------------
+ARG SRV_NAME=gocut
+ARG PACKAGE_NAME_PREFIX=srv.tztz.io/example
+# ------------------------
 
-# Start from the latest Alpine image with the latest version of Go installed
+ARG PACKAGE_NAME=${PACKAGE_NAME_PREFIX}/${SRV_NAME}
+
+##################################
+# STEP 1 - build executable binary
+##################################
+
+# Start from the latest Alpine Linux image with the latest version of Go installed
 FROM golang:alpine as builder
 
+# Create unprivileged app user
+ENV USER=appuser
+ENV UID=10001 
+RUN adduser \    
+    --disabled-password \    
+    --gecos "" \    
+    --home "/nonexistent" \    
+    --shell "/sbin/nologin" \    
+    --no-create-home \    
+    --uid "${UID}" \    
+    "${USER}"
+
 # Copy the local package files to the container's workspace
-ADD . /go/src/tztz.io/example/gocut
+ADD . /go/src/${PACKAGE_NAME}
 
-WORKDIR /go/src/tztz.io/example/gocut
+# Set current workdir
+WORKDIR /go/src/${PACKAGE_NAME}
 
-# Build the app with all its dependencies
-RUN go build
+# Build the service (the app) with all its dependencies
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o /go/bin/${SRV_NAME}
 
-# Install the app inside the container
-# (Fetch or manage dependencies here, either manually or with a tool like "godep")
-RUN go install srv.tztz.io/example/gocut
-
-############################
-# STEP 2 build a small image
-############################
+##############################
+# STEP 2 - build a small image
+##############################
 
 FROM scratch
 
-# Copy static executable
-COPY --from=builder /go/bin/gocut /go/bin/gocut
+# Import the user and group files from the builder stage (step 1)
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /etc/group /etc/group
 
-# Run the app by default when the container starts
-ENTRYPOINT /go/bin/gocut
+# Copy the static executable
+COPY --from=builder /go/bin/${SRV_NAME} /go/bin/${SRV_NAME}
 
-# Document that the service listens on port 3000
+# Use the unprivileged user
+USER appuser:appuser
+
+# Run the service by default when the container starts
+ENTRYPOINT ["/go/bin/gocut"]
+
+# Port on which the service will be exposed
 EXPOSE 3000
