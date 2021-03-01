@@ -10,18 +10,18 @@ ARG PACKAGE_NAME=${PACKAGE_NAME_PREFIX}/${SRV_NAME}
 ##################################
 
 # Start from the latest Alpine Linux image with the latest version of Go installed
-FROM golang:alpine as builder
+FROM golang:alpine@sha256:353e19718d4aa37cb38cf362e5aba23e22b8680bfc18255408ccd9b7b777c469 as builder
 
 # Create unprivileged app user
 ENV USER=appuser
-ENV UID=10001 
-RUN adduser \    
-    --disabled-password \    
-    --gecos "" \    
-    --home "/nonexistent" \    
-    --shell "/sbin/nologin" \    
-    --no-create-home \    
-    --uid "${UID}" \    
+ENV UID=10001
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/nonexistent" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid "${UID}" \
     "${USER}"
 
 # Copy the local package files to the container's workspace
