@@ -2,4 +2,7 @@ module srv.tztz.io/example/gocut
 
 go 1.15
 
-require github.com/gofiber/fiber/v2 v2.4.1
+require (
+	github.com/gin-gonic/gin v1.6.3
+	github.com/prometheus/client_golang v1.9.0
+)

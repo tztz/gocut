@@ -1,13 +1,21 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gin-gonic/gin"
+	prometheus "srv.tztz.io/example/gocut/internal/pkg/middleware"
+)
 
 func main() {
-	app := fiber.New()
+	r := gin.Default()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World 👋!")
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
 	})
 
-	app.Listen(":3000")
+	r.GET("/metrics", prometheus.Handler())
+
+	// listen and serve on port 3000
+	r.Run(":3000")
 }
