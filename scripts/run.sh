@@ -1,4 +1,4 @@
 #!/bin/sh
 
 # run locally
-go run -tags=dev main.go
+go run -tags=dev cmd/main.go
