@@ -44,6 +44,8 @@ RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o /go/bin/$
 
 FROM scratch
 
+LABEL maintainer="markimo-the-dev@tztz.io"
+
 ARG SERVICE_NAME
 
 # Import the user and group files from the builder stage (step 1)
