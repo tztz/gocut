@@ -15,6 +15,12 @@ A simple swipe from development to rollout with Golang.
 
 Then point your browser to `localhost:3000`
 
+Try the following endpoints:
+
+- `localhost:3000/api/ping`
+- `localhost:3000/admin/metrics`
+- `localhost:3000/admin/healthcheck`
+
 ## Build for production use
 
 This creates a production-ready Docker image:
@@ -25,4 +31,4 @@ This creates a production-ready Docker image:
 
     scripts/docker-run.sh
 
-Then point your browser to `localhost:3000`
+Then point your browser to `localhost:3000` and try the above endpoints.
