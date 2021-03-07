@@ -1,12 +1,12 @@
-package prometheus
+package middleware
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-// Handler creates Prometheus endpoint
-func Handler() gin.HandlerFunc {
+// PrometheusHandler attaches the Prometheus middleware
+func PrometheusHandler() gin.HandlerFunc {
 	h := promhttp.Handler()
 
 	return func(c *gin.Context) {
