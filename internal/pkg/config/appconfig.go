@@ -9,12 +9,15 @@ import (
 	"github.com/spf13/viper"
 )
 
-// InitAppConfig reads the application config file and sets configuration defaults
-func InitAppConfig() error {
+// InitAppConfig sets up Viper.
+func InitAppConfig() {
 	viper.SetConfigName("application")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(getConfigsPath())
+}
 
+// ReadAppConfig reads the application config file and sets configuration defaults.
+func ReadAppConfig() error {
 	err := viper.ReadInConfig()
 
 	if err != nil {
@@ -36,8 +39,7 @@ func getProjectRoot() string {
 	if !ok {
 		logrus.Fatal("Unable to retrieve runtime caller information")
 	}
-	// "filename" is an absolute path to this file
-	// Move up 3 levels to reach <project-root>
+	// "filename" is an absolute path to this file; move up 3 levels to reach <project-root>
 	return path.Clean(path.Join(path.Dir(filename), "..", "..", ".."))
 }
 
