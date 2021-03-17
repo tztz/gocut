@@ -1,28 +1,47 @@
 package config
 
 import (
+	"path"
+	"runtime"
+
+	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
 // InitAppConfig reads the application config file and sets configuration defaults
-func InitAppConfig() {
+func InitAppConfig() error {
 	viper.SetConfigName("application")
 	viper.SetConfigType("yaml")
-	// Depending on the directory in which the service has been started different config paths must be considered:
-	viper.AddConfigPath(".")
-	viper.AddConfigPath("./configs")
-	viper.AddConfigPath("../configs")
+	viper.AddConfigPath(getConfigsPath())
 
-	if err := viper.ReadInConfig(); err != nil {
+	err := viper.ReadInConfig()
+
+	if err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			log.Error("Config file not found")
+			log.Error("Application config file not found")
 		} else {
-			log.Error("Config file found but", err)
+			log.Error("Application config file found but corrupt. ", err)
 		}
 	} else {
-		log.Info("Config file successfully read")
-		// TODO: remove this test line:
-		log.Info("Example value: ", viper.Get("foo.bar"))
+		log.Info("Application config file successfully read")
 	}
+
+	return err
+}
+
+// getProjectRoot returns the absolute path to the project root.
+func getProjectRoot() string {
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		logrus.Fatal("Unable to retrieve runtime caller information")
+	}
+	// "filename" is an absolute path to this file
+	// Move up 3 levels to reach <project-root>
+	return path.Clean(path.Join(path.Dir(filename), "..", "..", ".."))
+}
+
+// getConfigsPath returns the absolute path to the <project-root>/configs directory.
+func getConfigsPath() string {
+	return path.Join(getProjectRoot(), "configs")
 }

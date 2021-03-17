@@ -5,7 +5,7 @@
 
 A simple swipe from development to rollout with Golang.
 
-## Build and run
+## Build, test, run
 
 ### Build and run for local use
 
@@ -33,7 +33,11 @@ This creates a production-ready Docker image:
 
     scripts/docker-run.sh
 
-### Try the service
+### Run all tests
+
+    scripts/test.sh
+
+## Try the service
 
 Point your browser to `localhost:3000`
 

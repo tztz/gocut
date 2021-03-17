@@ -10,6 +10,7 @@ require (
 	github.com/prometheus/client_golang v1.9.0
 	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/viper v1.7.1
+	github.com/stretchr/testify v1.6.1
 	github.com/ugorji/go v1.2.4 // indirect
 	golang.org/x/crypto v0.0.0-20210220033148-5ea612d1eb83 // indirect
 	golang.org/x/sys v0.0.0-20210305230114-8fe3ee5dd75b // indirect
