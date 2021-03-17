@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	"srv.tztz.io/example/gocut/internal/pkg/config"
 	healthcheck "srv.tztz.io/example/gocut/internal/pkg/middleware"
 	prometheus "srv.tztz.io/example/gocut/internal/pkg/middleware"
 )
@@ -9,6 +10,9 @@ import (
 // Start is the entrypoint of the gocut service.
 // Here everything is wired together.
 func Start() {
+	config.InitLogConfig()
+	config.InitAppConfig()
+
 	r := gin.Default()
 
 	r.GET("/api/ping", func(c *gin.Context) {
