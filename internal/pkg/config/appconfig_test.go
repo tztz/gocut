@@ -16,7 +16,7 @@ func TestAppConfigFileShouldBeReadAndHaveProp(t *testing.T) {
 
 	assert.Nil(t, err, "should have read app config successfully but did not work")
 
-	assert.Equal(t, 4711, viper.Get("foo.bar"), "could not find app property 'foo.bar'")
+	assert.Equal(t, 815, viper.Get("foo.bar"), "could not find app property 'foo.bar'")
 }
 
 func TestViperShouldReturnErrorIfAppConfigFileNotFound(t *testing.T) {

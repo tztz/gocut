@@ -1,6 +1,7 @@
 package config
 
 import (
+	"os"
 	"path"
 	"runtime"
 
@@ -11,9 +12,15 @@ import (
 
 // InitAppConfig sets up Viper.
 func InitAppConfig() {
-	viper.SetConfigName("application")
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath(getConfigsPath())
+	// load base config:
+	mergeInViperConfig("")
+	// load profile-specific config and override base config:
+	switch os.Getenv("PROFILE") {
+	case "test":
+		mergeInViperConfig("test")
+	case "dev":
+		mergeInViperConfig("dev")
+	}
 }
 
 // ReadAppConfig reads the application config file and sets configuration defaults.
@@ -31,6 +38,18 @@ func ReadAppConfig() error {
 	}
 
 	return err
+}
+
+// mergeInViperConfig loads and merges the application config for the given profile.
+func mergeInViperConfig(profile string) {
+	appendix := ""
+	if profile != "" {
+		appendix = "_" + profile
+	}
+	viper.SetConfigName("application" + appendix)
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(getConfigsPath())
+	viper.MergeInConfig()
 }
 
 // getProjectRoot returns the absolute path to the project root.
