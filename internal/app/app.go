@@ -1,6 +1,8 @@
 package app
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"srv.tztz.io/example/gocut/internal/pkg/config"
 	healthcheck "srv.tztz.io/example/gocut/internal/pkg/middleware"
@@ -14,6 +16,13 @@ func Start() {
 	config.InitAppConfig()
 
 	r := gin.Default()
+	r.LoadHTMLGlob("web/templates/*")
+
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+			"title": "gocut - Ahoi!",
+		})
+	})
 
 	r.GET("/api/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
