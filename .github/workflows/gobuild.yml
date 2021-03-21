@@ -20,8 +20,6 @@ jobs:
 
     - name: Build
       run: scripts/build.sh
-#      run: go build -v ./...
 
     - name: Test
       run: scripts/test.sh
-#      run: go test -v ./...
