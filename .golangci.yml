@@ -1,0 +1,23 @@
+linters-settings:
+  funlen:
+    lines: 70
+    statements: 40
+  lll:
+    line-length: 140
+
+linters:
+  enable-all: true
+  disable:
+    - wsl
+    - exhaustivestruct
+    - godot
+    - paralleltest
+    - testpackage
+    - forbidigo
+    - gomnd
+    - noctx
+    - gofumpt
+    - gci
+    - nlreturn
+    - maligned
+    - interfacer

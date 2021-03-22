@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 	"srv.tztz.io/example/gocut/internal/pkg/config"
 	healthcheck "srv.tztz.io/example/gocut/internal/pkg/middleware"
 	prometheus "srv.tztz.io/example/gocut/internal/pkg/middleware"
@@ -14,6 +15,8 @@ import (
 func Start() {
 	config.InitLogConfig()
 	config.InitAppConfig()
+
+	log.Info("Ahoi! This is gocut.")
 
 	r := gin.Default()
 	r.LoadHTMLGlob("web/templates/*")

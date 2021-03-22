@@ -47,6 +47,18 @@ Try the following endpoints:
 - `localhost:3000/admin/metrics`
 - `localhost:3000/admin/healthcheck`
 
+## Install required build tooling
+
+Some build tasks like source code linting require additional tooling which must be installed beforehand:
+
+    scripts/install_tools.sh
+
+## Lint the source code
+
+    scripts/lint.sh
+
+Note: Install the required tools first.
+
 ## Tech Stack
 
 - Logrus
