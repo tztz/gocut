@@ -49,11 +49,11 @@ Try the following endpoints:
 
 ## Install required build tooling
 
-Some build tasks like source code linting require additional tooling which must be installed beforehand:
+Some build tasks like source code linting require additional tooling which must be installed first:
 
     scripts/install_tools.sh
 
-## Lint the source code
+## Lint the source code (aka run static code analysis)
 
     scripts/lint.sh
 

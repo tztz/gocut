@@ -1,4 +1,4 @@
 #!/bin/sh
 
-# lint source code
+# lint source code (aka run static code analysis)
 golangci-lint run
