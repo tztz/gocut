@@ -5,17 +5,32 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
+
+func GetRunProfile() string {
+	return os.Getenv("RUN_PROFILE")
+}
+
+func IsTestProfileEnabled() bool {
+	return GetRunProfile() == "test"
+}
+
+func IsDevProfileEnabled() bool {
+	return GetRunProfile() == "dev"
+}
+
+func IsProdProfileEnabled() bool {
+	return GetRunProfile() == ""
+}
 
 // InitAppConfig sets up Viper.
 func InitAppConfig() {
 	// load base config:
 	mergeInViperConfig("")
 	// load profile-specific config and override base config:
-	switch os.Getenv("PROFILE") {
+	switch GetRunProfile() {
 	case "test":
 		mergeInViperConfig("test")
 	case "dev":
@@ -41,7 +56,7 @@ func ReadAppConfig() error {
 }
 
 // mergeInViperConfig loads and merges the application config for the given profile.
-func mergeInViperConfig(profile string) {
+func mergeInViperConfig(profile string) error {
 	appendix := ""
 	if profile != "" {
 		appendix = "_" + profile
@@ -49,14 +64,14 @@ func mergeInViperConfig(profile string) {
 	viper.SetConfigName("application" + appendix)
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(getConfigsPath())
-	viper.MergeInConfig()
+	return viper.MergeInConfig()
 }
 
 // getProjectRoot returns the absolute path to the project root.
 func getProjectRoot() string {
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
-		logrus.Fatal("Unable to retrieve runtime caller information")
+		log.Fatal("Unable to retrieve runtime caller information")
 	}
 	// "filename" is an absolute path to this file; move up 3 levels to reach <project-root>
 	return path.Clean(path.Join(path.Dir(filename), "..", "..", ".."))

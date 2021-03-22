@@ -6,8 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"srv.tztz.io/example/gocut/internal/pkg/config"
-	healthcheck "srv.tztz.io/example/gocut/internal/pkg/middleware"
-	prometheus "srv.tztz.io/example/gocut/internal/pkg/middleware"
+	"srv.tztz.io/example/gocut/internal/pkg/middleware"
 )
 
 // Start is the entrypoint of the gocut service.
@@ -16,7 +15,7 @@ func Start() {
 	config.InitLogConfig()
 	config.InitAppConfig()
 
-	log.Info("Ahoi! This is gocut.")
+	log.Info("Ahoi! This is gocut running with profile '" + config.GetRunProfile() + "'")
 
 	r := gin.Default()
 	r.LoadHTMLGlob("web/templates/*")
@@ -33,10 +32,12 @@ func Start() {
 		})
 	})
 
-	r.GET("/admin/metrics", prometheus.PrometheusHandler())
+	r.GET("/admin/metrics", middleware.PrometheusHandler())
 
-	r.GET("/admin/healthcheck", healthcheck.HealthcheckHandler())
+	r.GET("/admin/healthcheck", middleware.HealthcheckHandler())
 
 	// listen and serve on port 3000
-	r.Run(":3000")
+	if err := r.Run(":3000"); err != nil {
+		log.Fatal("Could not start server. ", err)
+	}
 }
