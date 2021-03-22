@@ -5,6 +5,12 @@
 
 A simple swipe from development to rollout with Golang.
 
+## Install required build tooling
+
+Some build tasks, such as source code linting, require additional tools to be installed first:
+
+    scripts/install_tools.sh
+
 ## Build, test, run
 
 ### Build and run for local use
@@ -37,6 +43,12 @@ This creates a production-ready Docker image:
 
     scripts/test.sh
 
+### Lint the source code (aka run static code analysis)
+
+    scripts/lint.sh
+
+Note: For the linter to work the required tools must be installed beforehand (see "Install required build tooling").
+
 ## Try the service
 
 Point your browser to `localhost:3000`
@@ -46,18 +58,6 @@ Try the following endpoints:
 - `localhost:3000/api/ping`
 - `localhost:3000/admin/metrics`
 - `localhost:3000/admin/healthcheck`
-
-## Install required build tooling
-
-Some build tasks like source code linting require additional tooling which must be installed first:
-
-    scripts/install_tools.sh
-
-## Lint the source code (aka run static code analysis)
-
-    scripts/lint.sh
-
-Note: Install the required tools first.
 
 ## Tech Stack
 
