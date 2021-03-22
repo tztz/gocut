@@ -5,6 +5,12 @@
 
 A simple swipe from development to rollout with Golang.
 
+## Install required build tooling
+
+Some build tasks, such as source code linting, require additional tools to be installed first:
+
+    scripts/install_tools.sh
+
 ## Build, test, run
 
 ### Build and run for local use
@@ -36,6 +42,12 @@ This creates a production-ready Docker image:
 ### Run all tests
 
     scripts/test.sh
+
+### Lint the source code (aka run static code analysis)
+
+    scripts/lint.sh
+
+Note: For the linter to work the required tools must be installed beforehand (see "Install required build tooling").
 
 ## Try the service
 
