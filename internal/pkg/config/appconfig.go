@@ -10,7 +10,11 @@ import (
 )
 
 func GetRunProfile() string {
-	return os.Getenv("RUN_PROFILE")
+	profile := os.Getenv("RUN_PROFILE")
+	if profile == "" {
+		return "prod"
+	}
+	return profile
 }
 
 func IsTestProfileEnabled() bool {
@@ -22,7 +26,7 @@ func IsDevProfileEnabled() bool {
 }
 
 func IsProdProfileEnabled() bool {
-	return GetRunProfile() == ""
+	return GetRunProfile() == "prod"
 }
 
 // InitAppConfig sets up Viper.
