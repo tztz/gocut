@@ -13,6 +13,8 @@ Some build tasks, such as source code linting, require additional tools to be in
 
 Note: Keep your tooling up to date, i.e. regularly update the versions declared in the script and re-run it.
 
+Attention: You may need to open a new terminal window to use some of the tools.
+
 ## Build, test, run
 
 ### Build and run for local use
