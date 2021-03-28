@@ -15,6 +15,7 @@ func Start() {
 	config.InitLogConfig()
 	if err := config.InitAppConfig(); err != nil {
 		log.Fatal("Could not initialize app config: ", err)
+		//nolint: godox
 		// TODO: fail safe
 	}
 
