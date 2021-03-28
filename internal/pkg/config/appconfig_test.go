@@ -29,6 +29,10 @@ func assertNotFound(t *testing.T, path string) {
 	assert.True(t, strings.HasPrefix(err.Error(), "app config file not found for profile"))
 }
 
+func TestInitAppConfig(t *testing.T) {
+	assert.Equal(t, InitAppConfig(), InitAppConfigForPath(getConfigsPath()))
+}
+
 func TestAppConfigFileShouldBeReadAndHaveProp(t *testing.T) {
 	configsPath := getProjectRoot() + "/test/configs"
 
@@ -65,4 +69,23 @@ func TestViperShouldReturnErrorIfAppConfigFileFoundButCorrupt(t *testing.T) {
 	var e viper.ConfigParseError
 	assert.True(t, errors.As(err, &e), "should have found corrupt app config but it is valid")
 	assert.True(t, strings.HasPrefix(err.Error(), "app config file found but corrupt for profile [corrupt]: "))
+}
+
+func TestIsFooProfileEnabledFuncs(t *testing.T) {
+	os.Setenv("RUN_PROFILE", "test")
+	assert.True(t, IsTestProfileEnabled())
+
+	os.Setenv("RUN_PROFILE", "dev")
+	assert.True(t, IsDevProfileEnabled())
+
+	os.Setenv("RUN_PROFILE", "prod")
+	assert.True(t, IsProdProfileEnabled())
+
+	os.Setenv("RUN_PROFILE", "")
+	assert.True(t, IsProdProfileEnabled())
+
+	os.Setenv("RUN_PROFILE", "foo-bar")
+	assert.False(t, IsTestProfileEnabled())
+	assert.False(t, IsDevProfileEnabled())
+	assert.False(t, IsProdProfileEnabled())
 }
