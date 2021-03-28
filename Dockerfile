@@ -5,6 +5,7 @@ ARG MAIN_GO_FILE=cmd/main.go
 # ------------------------
 
 ARG PACKAGE_NAME=${PACKAGE_NAME_PREFIX}/${SERVICE_NAME}
+ARG BUILD_TAG=prod
 
 ##################################
 # STEP 1 - build executable binary
@@ -16,6 +17,7 @@ FROM golang:alpine@sha256:353e19718d4aa37cb38cf362e5aba23e22b8680bfc18255408ccd9
 ARG SERVICE_NAME
 ARG MAIN_GO_FILE
 ARG PACKAGE_NAME
+ARG BUILD_TAG
 
 # Create unprivileged app user
 ENV USER=appuser
@@ -35,8 +37,8 @@ ADD . /go/src/${PACKAGE_NAME}
 # Set current workdir
 WORKDIR /go/src/${PACKAGE_NAME}
 
-# Build the service (the app) with all its dependencies
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o /go/bin/${SERVICE_NAME} ${MAIN_GO_FILE}
+# Build the service (the app) and all its dependencies with the given build tag
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -tags=${BUILD_TAG} -ldflags="-w -s" -o /go/bin/${SERVICE_NAME} ${MAIN_GO_FILE}
 
 ##############################
 # STEP 2 - build a small image

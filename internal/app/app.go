@@ -13,7 +13,11 @@ import (
 // Here everything is wired together.
 func Start() {
 	config.InitLogConfig()
-	config.InitAppConfig()
+	if err := config.InitAppConfig(); err != nil {
+		log.Fatal("Could not initialize app config: ", err)
+		//nolint: godox
+		// TODO: fail safe
+	}
 
 	log.Info("Ahoi! This is gocut running with profile '" + config.GetRunProfile() + "'")
 
