@@ -40,6 +40,16 @@ func IsProdProfileEnabled() bool {
 	return GetRunProfile() == prodProfile
 }
 
+// GetProjectRoot returns the absolute path to the project root.
+func GetProjectRoot() string {
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		log.Fatal("Unable to retrieve runtime caller information")
+	}
+	// "filename" is an absolute path to this file; move up 3 levels to reach <project-root>
+	return path.Clean(path.Join(path.Dir(filename), "..", "..", ".."))
+}
+
 // InitAppConfig sets up the Viper config.
 func InitAppConfig() error {
 	return InitAppConfigForPath(getConfigsPath())
@@ -92,17 +102,7 @@ func mergeInViperConfig(profile string) error {
 	return nil
 }
 
-// getProjectRoot returns the absolute path to the project root.
-func getProjectRoot() string {
-	_, filename, _, ok := runtime.Caller(0)
-	if !ok {
-		log.Fatal("Unable to retrieve runtime caller information")
-	}
-	// "filename" is an absolute path to this file; move up 3 levels to reach <project-root>
-	return path.Clean(path.Join(path.Dir(filename), "..", "..", ".."))
-}
-
 // getConfigsPath returns the absolute path to the <project-root>/configs directory.
 func getConfigsPath() string {
-	return path.Join(getProjectRoot(), "configs")
+	return path.Join(GetProjectRoot(), "configs")
 }

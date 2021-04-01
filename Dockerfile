@@ -49,6 +49,7 @@ FROM scratch
 LABEL maintainer="markimo-the-dev@tztz.io"
 
 ARG SERVICE_NAME
+ARG PACKAGE_NAME
 
 # Import the user and group files from the builder stage (step 1)
 COPY --from=builder /etc/passwd /etc/passwd
@@ -56,6 +57,10 @@ COPY --from=builder /etc/group /etc/group
 
 # Copy the static executable
 COPY --from=builder /go/bin/${SERVICE_NAME} /go/bin/main
+# Copy the configs folder
+COPY --from=builder /go/src/${PACKAGE_NAME}/configs /go/src/${PACKAGE_NAME}/configs
+# Copy the web folder
+COPY --from=builder /go/src/${PACKAGE_NAME}/web /go/src/${PACKAGE_NAME}/web
 
 # Use the unprivileged user
 USER appuser:appuser

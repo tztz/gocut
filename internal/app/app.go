@@ -2,6 +2,7 @@ package app
 
 import (
 	"net/http"
+	"path"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -22,7 +23,7 @@ func Start() {
 	log.Info("Ahoi! This is gocut running with profile '" + config.GetRunProfile() + "'")
 
 	r := gin.Default()
-	r.LoadHTMLGlob("web/templates/*")
+	r.LoadHTMLGlob(path.Join(config.GetProjectRoot(), "web/templates/*"))
 
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
