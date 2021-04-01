@@ -2,8 +2,10 @@
 ARG SERVICE_NAME=gocut
 ARG PACKAGE_NAME_PREFIX=srv.tztz.io/example
 ARG MAIN_GO_FILE=cmd/main.go
+ARG GIN_MODE=release
 # ------------------------
 
+# Do not modify these ARGs:
 ARG PACKAGE_NAME=${PACKAGE_NAME_PREFIX}/${SERVICE_NAME}
 ARG BUILD_TAG=prod
 
@@ -49,6 +51,7 @@ FROM scratch
 LABEL maintainer="markimo-the-dev@tztz.io"
 
 ARG SERVICE_NAME
+ARG GIN_MODE
 ARG PACKAGE_NAME
 
 # Import the user and group files from the builder stage (step 1)
@@ -64,6 +67,8 @@ COPY --from=builder /go/src/${PACKAGE_NAME}/web /go/src/${PACKAGE_NAME}/web
 
 # Use the unprivileged user
 USER appuser:appuser
+
+ENV GIN_MODE=${GIN_MODE}
 
 # Run the service by default when the container starts
 ENTRYPOINT ["/go/bin/main"]
