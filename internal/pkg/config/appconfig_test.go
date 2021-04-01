@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"os"
+	"path"
 	"strings"
 	"testing"
 
@@ -34,7 +35,7 @@ func TestInitAppConfig(t *testing.T) {
 }
 
 func TestAppConfigFileShouldBeReadAndHaveProp(t *testing.T) {
-	configsPath := getProjectRoot() + "/test/configs"
+	configsPath := path.Join(GetProjectRoot(), "test/configs")
 
 	os.Setenv("RUN_PROFILE", "test")
 	assertProp(t, configsPath, 815)
@@ -61,7 +62,7 @@ func TestViperShouldReturnErrorIfAppConfigFileNotFound(t *testing.T) {
 }
 
 func TestViperShouldReturnErrorIfAppConfigFileFoundButCorrupt(t *testing.T) {
-	configsPath := getProjectRoot() + "/test/configs"
+	configsPath := path.Join(GetProjectRoot(), "test/configs")
 
 	viper.Reset()
 	os.Setenv("RUN_PROFILE", "corrupt")
