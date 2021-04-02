@@ -11,14 +11,43 @@ import (
 	"github.com/spf13/viper"
 )
 
-var errAppConfigFileNotFound = errors.New("app config file not found")
-var errAppConfigFileFoundButCorrupt = errors.New("app config file found but corrupt")
-
 const (
 	prodProfile = "prod"
 	testProfile = "test"
 	devProfile  = "dev"
 )
+
+var errAppConfigFileNotFound = errors.New("app config file not found")
+var errAppConfigFileFoundButCorrupt = errors.New("app config file found but corrupt")
+
+// InitAppConfig sets up the Viper config.
+func InitAppConfig() error {
+	return InitAppConfigForPath(getConfigsPath())
+}
+
+// InitAppConfigForPath sets up the Viper config,
+// searches in given path for config files.
+func InitAppConfigForPath(configPath string) error {
+	if configPath == "" {
+		viper.AddConfigPath(getConfigsPath())
+	} else {
+		viper.AddConfigPath(configPath)
+	}
+
+	// load base (aka prod) config:
+	if err := mergeInViperConfig(""); err != nil {
+		return err
+	}
+
+	if profile := GetRunProfile(); profile != "" && profile != prodProfile {
+		// load profile-specific config and override base/prod config:
+		if err := mergeInViperConfig(profile); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
 
 func GetRunProfile() string {
 	profile := os.Getenv("RUN_PROFILE")
@@ -48,35 +77,6 @@ func GetProjectRoot() string {
 	}
 	// "filename" is an absolute path to this file; move up 3 levels to reach <project-root>
 	return path.Clean(path.Join(path.Dir(filename), "..", "..", ".."))
-}
-
-// InitAppConfig sets up the Viper config.
-func InitAppConfig() error {
-	return InitAppConfigForPath(getConfigsPath())
-}
-
-// InitAppConfigForPath sets up the Viper config,
-// searches in given path for config files.
-func InitAppConfigForPath(configPath string) error {
-	if configPath == "" {
-		viper.AddConfigPath(getConfigsPath())
-	} else {
-		viper.AddConfigPath(configPath)
-	}
-
-	// load base (aka prod) config:
-	if err := mergeInViperConfig(""); err != nil {
-		return err
-	}
-
-	if profile := GetRunProfile(); profile != "" && profile != prodProfile {
-		// load profile-specific config and override base/prod config:
-		if err := mergeInViperConfig(profile); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }
 
 // mergeInViperConfig loads and merges the application config for the given profile.
