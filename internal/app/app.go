@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 	"srv.tztz.io/example/gocut/internal/pkg/config"
 	"srv.tztz.io/example/gocut/internal/pkg/middleware"
 )
@@ -36,8 +37,8 @@ func Start() {
 
 	r.GET("/admin/healthcheck", middleware.HealthcheckHandler())
 
-	// listen and serve on port 3000
-	if err := r.Run(":3000"); err != nil {
+	// listen and serve
+	if err := r.Run(":" + viper.GetString("gin.port")); err != nil {
 		log.Fatal("Could not start server. ", err)
 	}
 }

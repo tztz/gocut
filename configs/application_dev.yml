@@ -1,5 +1,6 @@
 gin:
   mode: debug
+  port: 3000
 
 foo:
   bar: 5551234
