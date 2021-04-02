@@ -13,12 +13,7 @@ import (
 // Start is the entrypoint of the gocut service.
 // Here everything is wired together.
 func Start() {
-	config.InitLogConfig()
-	if err := config.InitAppConfig(); err != nil {
-		log.Fatal("Could not initialize app config: ", err)
-		//nolint: godox
-		// TODO: fail safe
-	}
+	initConfigs()
 
 	log.Info("Ahoi! This is gocut running with profile '" + config.GetRunProfile() + "'")
 
@@ -45,4 +40,12 @@ func Start() {
 	if err := r.Run(":3000"); err != nil {
 		log.Fatal("Could not start server. ", err)
 	}
+}
+
+func initConfigs() {
+	config.InitLogConfig()
+	if err := config.InitAppConfig(); err != nil {
+		log.Fatalf("Could not initialize app config: %s", err)
+	}
+	config.InitGinConfig()
 }

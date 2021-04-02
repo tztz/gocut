@@ -1,2 +1,5 @@
+gin:
+  mode: release
+
 foo:
   bar: 4711

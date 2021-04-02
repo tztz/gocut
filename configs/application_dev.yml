@@ -1,2 +1,5 @@
+gin:
+  mode: debug
+
 foo:
   bar: 5551234
