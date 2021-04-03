@@ -54,7 +54,7 @@ In order to build and run with e.g. "prod" build tag resp. profile, execute:
 
 ### Build for production use
 
-This creates a production-ready Docker image:
+This creates a minimal-size (from scratch) production-ready Docker image:
 
     scripts/prod-build.sh
 
