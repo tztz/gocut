@@ -93,5 +93,6 @@ Try the following endpoints:
 - Logrus
 - Viper
 - Gin Web Framework
+- gin-health-check
 - Prometheus
-- Docker (from scratch)
+- Docker (from scratch, statically linked)
