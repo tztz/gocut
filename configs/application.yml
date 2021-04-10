@@ -1,6 +1,3 @@
 gin:
   mode: release
   port: 8080
-
-foo:
-  bar: 4711
